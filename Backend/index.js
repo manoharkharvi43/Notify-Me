@@ -16,21 +16,18 @@ app.use(express.json());
 
 app.use("/", router);
 
-// router.post("/register", (req, res) => {
-//   if (req.body.token) tokens.push(req.body.token);
-//   // else res.status(400).json({ message: "Token can't be empty" });
-//   res.status(200).json({ message: "Successfully registered FCM Token!" });
-// });
-
 router.post("/notifications", async (req, res) => {
   try {
-    const { title, body, imageUrl, token } = req.body;
+    const { title, body, imageUrl, token, route } = req.body;
     await admin.messaging().send({
       token,
       notification: {
         title,
         body,
         imageUrl,
+      },
+      data: {
+        type: "Notification",
       },
     });
     res.status(200).json({ message: "Successfully sent notifications!" });
